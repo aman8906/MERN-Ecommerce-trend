@@ -25,10 +25,11 @@ export const getKafka = () => {
 };
 
 export const connectKafkaProducer = async () => {
-  if (!kafkaEnabled()) {
-    console.log("Kafka: KAFKA_BROKERS not set, events are processed in-process");
-    return;
-  }
+  if (kafkaEnabled() && process.env.KAFKA_EMBEDDED_CONSUMER !== "false") {
+  startConsumer().catch((e) =>
+    console.log("Kafka consumer failed to start:", e.message)
+  );
+}
   try {
     const k = getKafka();
     const admin = k.admin();
