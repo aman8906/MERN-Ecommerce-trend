@@ -6,7 +6,14 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, required: true, min: 0 }, // selling price
   mrp: { type: Number, default: 0 }, // original price (for "% off")
   discountPercent: { type: Number, default: 0 },
-  image: { type: Array, required: true },
+  image: {
+  type: [String],
+  required: true,
+  validate: {
+    validator: (images) => images.length > 0,
+    message: "At least one product image is required",
+  },
+},
   category: { type: String, required: true },
   subCategory: { type: String, default: "" },
   brand: { type: String, default: "", trim: true },
