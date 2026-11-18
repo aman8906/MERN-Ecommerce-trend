@@ -1,8 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { HeartIcon, StarIcon } from "./Icons";
 import { money, compact } from "../utils/format";
+
+// grey placeholder shown when a photo URL is missing or broken (instead of the browser's broken-image icon)
+const FALLBACK =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="#f3f4f6"/><text x="200" y="270" font-size="72" text-anchor="middle">🛍️</text></svg>'
+  );
+
+// Cloudinary: ask for a card-sized copy (about 450px wide) instead of the full photo. Much less data on mobile.
+export const thumb = (url) => {
+  if (!url || !url.includes("res.cloudinary.com") || !url.includes("/upload/")) return url;
+  if (url.includes("/upload/f_auto,q_auto,w_900/")) return url.replace("/upload/f_auto,q_auto,w_900/", "/upload/f_auto,q_auto,w_450/");
+  return url.replace(/\/upload\/(v\d+\/)/, "/upload/f_auto,q_auto,w_450/$1"); // photos uploaded from admin (no transformation yet)
+};
 
 export const RatingPill = ({ rating, count, className = "" }) =>
   rating > 0 ? (
@@ -21,15 +35,19 @@ const ProductItem = ({ product, rank }) => {
   const { wishlist, toggleWishlist, cacheProducts, config } = useContext(ShopContext);
   const liked = wishlist.has(product._id);
   const out = product.stock <= 0;
+  const [broken, setBroken] = useState(false);
+  useEffect(() => setBroken(false), [product.image?.[0]]);
 
   return (
     <div className="relative flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white transition hover:shadow-lg">
       <Link to={`/product/${product._id}`} onClick={() => cacheProducts([product])} className="block">
         <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
           <img
-            src={product.image[0]}
+            src={broken ? FALLBACK : thumb(product.image?.[0]) || FALLBACK}
             alt={product.name}
             loading="lazy"
+            decoding="async"
+            onError={() => setBroken(true)}
             className={`h-full w-full object-cover transition duration-500 hover:scale-105 ${out ? "opacity-50" : ""}`}
           />
           {rank && (
