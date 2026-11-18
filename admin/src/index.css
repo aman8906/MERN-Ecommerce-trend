@@ -1,16 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-* {
-  font-family: Outfit, system-ui, sans-serif;
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-select, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), textarea {
-  border: 1.5px solid #d4d4d8;
-  outline-color: #a21caf;
-  border-radius: 8px;
-  background: white;
+/* Tailwind v4: plain CSS outside a @layer beats utility classes, so element defaults live in the base layer */
+@layer base {
+  * {
+    font-family: Outfit, system-ui, sans-serif;
+  }
+
+  select, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), textarea {
+    border: 1.5px solid #d4d4d8;
+    outline-color: #a21caf;
+    border-radius: 8px;
+    background: white;
+  }
 }

@@ -1,15 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-* {
-    font-family: Outfit, system-ui, sans-serif;
+@theme {
+  --color-brand: #9f2089;
+  --color-brand-dark: #7a1a69;
+  --color-brand-light: #fbe8f8;
+  --color-brand-soft: #fdf4fc;
+
+  --color-deal: #ff4d4f;
+  --color-good: #1a9b54;
+
+  --animate-pulseDot: pulseDot 1.4s ease-in-out infinite;
+  --animate-fadeIn: fadeIn 0.35s ease both;
+
+  @keyframes pulseDot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(1.6);
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
-body {
+/* v4 default border colour is currentcolor: keep the old light-grey look */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer base {
+  * {
+    font-family: Outfit, system-ui, sans-serif;
+  }
+
+  body {
     background: #fafafa;
+  }
 }
 
 a.active hr {
