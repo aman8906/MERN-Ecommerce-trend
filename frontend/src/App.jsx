@@ -15,6 +15,9 @@ import Verify from './pages/Verify'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import BottomNav from './components/BottomNav'
+import Policy from './pages/Policy'
+import NotFound from './pages/NotFound'
+import WhatsAppButton from './components/WhatsAppButton'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -40,9 +43,13 @@ const App = () => {
           <Route path='/place-order' element={<PlaceOrder />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/verify' element={<Verify />} />
+          <Route path='/policy/:slug' element={<Policy />} />
+          <Route path='*' element={<NotFound />} />
+
         </Routes>
-        <Footer />
       </main>
+        <Footer />
+      <WhatsAppButton />
       <BottomNav />
     </div>
   )

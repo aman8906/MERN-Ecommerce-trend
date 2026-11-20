@@ -20,6 +20,7 @@ import cartRouter from "./routes/cartRoute.js";
 import wishlistRouter from "./routes/wishlistRoute.js";
 import reviewRouter from "./routes/reviewRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import newsletterRouter from "./routes/newsletterRoute.js";   
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -54,6 +55,7 @@ app.use("/api/cart", cartRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/newsletter", rateLimit({ windowMs: 60 * 60_000, limit: 10 }), newsletterRouter); 
 app.get("/api/config", (req, res) => res.json({ success: true, currency: "₹", ...shippingConfig() }));
 
 app.get("/", (req, res) =>

@@ -5,6 +5,7 @@ const bannerSchema = new mongoose.Schema({
   subtitle: { type: String, default: "" },
   image: { type: String, required: true },
   link: { type: String, default: "/collection" },
+  position: { type: String, enum: ["hero", "strip"], default: "hero" }, // hero = top slider, strip = promo cards mid-page
   order: { type: Number, default: 0 },
   active: { type: Boolean, default: true },
 });
